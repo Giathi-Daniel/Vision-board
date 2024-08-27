@@ -49,6 +49,7 @@ function HeaderWithLocation() {
     '/big-life-dreams': 'Big Life Dreams',
     '/manage-categories': 'Manage Categories',
   };
+  
 
   const headerTitle = pathTitleMap[location.pathname] || 'My Vision Board';
   const showHomeButton = location.pathname !== '/';
