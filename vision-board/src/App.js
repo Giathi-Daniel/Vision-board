@@ -4,6 +4,7 @@ import Header from './components/Header';
 import VisionBoard from './components/VisionBoard';
 import ProfessionalGoals from './components/ProfessionalGoals';
 import ManageCategories from "./components/Category/ManageCategories"
+import NotFound from './pages/NotFound'; 
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<VisionBoard />} />
             <Route path="/professional-goals" element={<ProfessionalGoals />} />
             <Route path="/manage-categories" element={<ManageCategories />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </div>
