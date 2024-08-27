@@ -28,7 +28,9 @@ const VisionBoard = () => {
           <Link to={category.path} key={index}>
             <div className={`${category.bgColor} shadow-md p-6 rounded-md`}>
               <h2 className={`${category.textColor} text-xl font-semibold mb-4`}>{category.name}</h2>
-              <p className="text-gray-600 mt-1 truncate">Description not available</p>
+              <div className="bg-gray-200 px-2 py-2 rounded-sm w-full">
+                <p className="text-gray-600 mt-1 truncate">Description not available</p>
+              </div>
             </div>
           </Link>
         ))}
