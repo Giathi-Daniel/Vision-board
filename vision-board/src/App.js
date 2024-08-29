@@ -4,6 +4,8 @@ import Header from './components/Header';
 import VisionBoard from './components/VisionBoard';
 import ProfessionalGoals from './components/ProfessionalGoals';
 import ManageCategories from "./components/Category/ManageCategories"
+import Login from './pages/Login'
+import Register from './pages/Register'
 import NotFound from './pages/NotFound'; 
 
 function App() {
@@ -11,13 +13,15 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 p-4">
+      <div className="min-h-screen p-4 bg-gray-100">
         <HeaderWithLocation />
         <main className="max-w-6xl mx-auto">
           <Routes>
             <Route path="/" element={<VisionBoard />} />
             <Route path="/professional-goals" element={<ProfessionalGoals />} />
             <Route path="/manage-categories" element={<ManageCategories />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
