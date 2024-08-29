@@ -6,6 +6,7 @@ import ProfessionalGoals from './components/ProfessionalGoals';
 import ManageCategories from "./components/Category/ManageCategories"
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Profile from './pages/Register'
 import NotFound from './pages/NotFound'; 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/manage-categories" element={<ManageCategories />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
