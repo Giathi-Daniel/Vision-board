@@ -1,4 +1,4 @@
 # About vision-board
-- I am developing a system that will help track my progress in different areas of my life
+- This is a vision-board web application designed using MERN stack 
 
 ![desktop-design](./vision-board/public/design.png)
