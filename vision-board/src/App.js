@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import {ToastContainer} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
 import Header from './components/Header';
 import VisionBoard from './components/VisionBoard';
 import ProfessionalGoals from './components/ProfessionalGoals';
@@ -8,6 +10,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Register'
 import NotFound from './pages/NotFound'; 
+
 
 function App() {
 
@@ -27,6 +30,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+        <ToastContainer />
       </div>
     </Router>
   );

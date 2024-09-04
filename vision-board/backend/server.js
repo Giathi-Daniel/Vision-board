@@ -1,6 +1,10 @@
 const express = require('express')
 const connectDB = express('./config/db')
 const authRoutes = express('./config/db')
+const cron = require('node-cron')
+const nodemailer = require('nodemailer')
+const mongoose = require('mongoose')
+const Goal = require('./models/Goal')
 
 
 const app = express()
@@ -93,6 +97,26 @@ app.post('/api/categories', async (req, res) => {
 //     res.json(updatedGoal)
 // })
 
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'giathidaniel252@gmail.com',
+        pass: 'your-email-password'
+    }
+})
+
+cron.schedule('0 8 * * *', async () => {
+    const goals = await Goal.find({reminderDate: {$lte: new Date()}})
+    goals.forEach((goal) => {
+        transporter.sendMail({
+            from: 'giathidaniel252@gmail.com',
+            to: goal.userEmail,
+            subject: `Reminder: ${goal.title}`,
+            text: `This is a reminder for your goal: ${goal.title}\n\nDescription: ${goal.description}`
+        })
+    })
+})
 
 
 
