@@ -71,6 +71,7 @@ function HeaderWithLocation() {
     '/priorities': 'Priorities to Focus On',
     '/big-life-dreams': 'Big Life Dreams',
     '/manage-categories': 'Manage Categories',
+    '/add-goal': 'Add Goal',
   };
   
 
