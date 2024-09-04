@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import {useNavigate} from "react-router-dom"
-import {FaHome, FaBell} from "react-icons/fa"
+import {useNavigate, Link} from "react-router-dom"
+import {FaHome, FaBell, FaChartBar} from "react-icons/fa"
 import AuthContext from './AuthContext'
 
 
@@ -42,6 +42,9 @@ const Header = ({title, onHomeClick, onNotificationClick}) => {
         <button onClick={onNotificationClick} className="text-blue-600 hover:text-blue-800">
           <FaBell size={24} />
         </button>
+        <Link to="/dashboard" className="text-blue-600 hover:text-blue-800">
+          <FaChartBar size={24} />
+        </Link>
       </div>
       <div className='flex items-center'>
         {!user ? (

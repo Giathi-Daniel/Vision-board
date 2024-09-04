@@ -8,6 +8,7 @@ import ProfessionalGoals from './components/ProfessionalGoals';
 import ManageCategories from "./components/Category/ManageCategories"
 import Notification from "./components/Notification"
 import AddGoalForm from "./components/AddGoalForm"
+import Dashboard from "./components/Dashboard"
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Register'
@@ -36,10 +37,12 @@ function App() {
             <Route path="/" element={<VisionBoard />} />
             <Route path="/professional-goals" element={<ProfessionalGoals />} />
             <Route path="/manage-categories" element={<ManageCategories />} />
+            <Route path="/manage-categories" element={<ManageCategories />} />
             <Route path="/add-goal" render={() => <AddGoalForm onGoalAdded={handleGoalAdded} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

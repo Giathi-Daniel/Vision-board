@@ -40,4 +40,13 @@ router.delete('/:goalId/subgoals/:subgoalId', async (req, res) => {
     }
 })
 
+router.get('/progress', async (req, res) => {
+    try {
+        const goals = await Goal.find()
+        res.json(goals)
+    } catch (error) {
+        res.status(500).json({ message: 'Error'})
+    }
+})
+
 module.exports = router
