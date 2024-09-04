@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {FaBell} from 'react-icons/fa'
 import axios from 'axios'
 
-const Register = () => {
+const Notification = () => {
     const [notifications, setNotifications] = useState([])
     const [shoowPopup, setShowPopup] = useState(false)
 
@@ -39,4 +39,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Notification

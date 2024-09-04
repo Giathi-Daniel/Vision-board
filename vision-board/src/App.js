@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import {ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
@@ -6,6 +6,7 @@ import Header from './components/Header';
 import VisionBoard from './components/VisionBoard';
 import ProfessionalGoals from './components/ProfessionalGoals';
 import ManageCategories from "./components/Category/ManageCategories"
+import Notification from "./components/Notification"
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Register'
@@ -13,12 +14,17 @@ import NotFound from './pages/NotFound';
 
 
 function App() {
+  const [showNotifications, setShowNotifications] = useState(false)
 
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications)
+  }
 
   return (
     <Router>
       <div className="min-h-screen p-4 bg-gray-100">
-        <HeaderWithLocation />
+        <HeaderWithLocation onNotificationClick={handleNotificationClick} />
+        {showNotifications && <Notification />}
         <main className="max-w-6xl mx-auto">
           <Routes>
             <Route path="/" element={<VisionBoard />} />
