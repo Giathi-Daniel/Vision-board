@@ -3,7 +3,6 @@ const connectDB = express('./config/db')
 const authRoutes = express('./config/db')
 const cron = require('node-cron')
 const nodemailer = require('nodemailer')
-const mongoose = require('mongoose')
 const Goal = require('./models/Goal')
 
 

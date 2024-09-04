@@ -9,6 +9,7 @@ const subgoalSchema = new mongoose.Schema({
 const goalSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: {type: String},
+    reminderDate: Date,
     category: {type: String},
     subgoals: [subgoalSchema]
 })
