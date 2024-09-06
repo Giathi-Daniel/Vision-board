@@ -14,8 +14,17 @@ const goalSchema = new mongoose.Schema({
     category: {type: String},
     completionPercentage: {type: Number, default: 0},
     subgoals: [subgoalSchema],
-    createdAt: {type: Date, default: Date.now}
+    sharedWith: { type: [String], default: [] },
+    isPublic: { type: Boolean, default: false },
+    shareableLink: { type: String }, 
+    createdAt: { type: Date, default: Date.now }
 })
+
+goalSchema.methods.generateShareableLink = function () {
+    const baseUrl = 'https://vision-board.vercel/share/';
+    const link = baseUrl + this._id;
+    return link;
+}
 
 const Goal = mongoose.model('Goal', goalSchema)
 
