@@ -9,6 +9,7 @@ import ManageCategories from "./components/Category/ManageCategories"
 import Notification from "./components/Notification"
 import AddGoalForm from "./components/AddGoalForm"
 import Dashboard from "./components/Dashboard"
+import ProgressDashboard from "./components/ProgressDashboard"
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Register'
@@ -43,6 +44,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/progress-dashboard" element={<ProgressDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
