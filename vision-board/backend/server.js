@@ -117,6 +117,25 @@ cron.schedule('0 8 * * *', async () => {
     })
 })
 
+app.put('/api/goals/:id/completion', async (req, res) => {
+    const { id } = req.params;
+    const { completionPercentage } = req.body;
+    
+    try {
+      const goal = await Goal.findById(id);
+      if (!goal) {
+        return res.status(404).json({ message: 'Goal not found' });
+      }
+  
+      goal.completionPercentage = completionPercentage;
+      await goal.save();
+  
+      res.status(200).json(goal);
+    } catch (error) {
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
 
 
 app.listen(PORT, () => {
