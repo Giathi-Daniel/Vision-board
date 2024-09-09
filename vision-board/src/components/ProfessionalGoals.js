@@ -10,6 +10,8 @@ function ProfessionalGoals() {
   const [newGoal, setNewGoal] = useState({ title: '', description: '', category: '' });
   const [showModal, setShowModal] = useState(false);
   const [updatingGoal, setUpdatingGoal] = useState(null);
+  const [shareLink, setShareLink] = useState('');
+  const [sharedWith, setSharedWith] = useState([]);
 
   useEffect(() => {
     fetch('/api/goals')
@@ -51,6 +53,25 @@ function ProfessionalGoals() {
       toast.success('Goal progress updated!');
     } catch (error) {
       toast.error('Error updating goal progress');
+    }
+  };
+
+  const handlePublicShare = async () => {
+    try {
+      const response = await axios.post(`/api/goals/${goal._id}/share/public`);
+      setShareLink(response.data.shareableLink);
+      toast.success('Goal shared publicly!');
+    } catch (error) {
+      toast.error('Error sharing goal');
+    }
+  };
+
+  const handlePrivateShare = async () => {
+    try {
+      const response = await axios.post(`/api/goals/${goal._id}/share/private`, { sharedWith });
+      toast.success('Goal shared privately!');
+    } catch (error) {
+      toast.error('Error sharing goal');
     }
   };
 
@@ -151,6 +172,35 @@ function ProfessionalGoals() {
           onClose={() => setShowModal(false)}
         />
       )}
+
+      <div className="share-options">
+        <button onClick={handlePublicShare} className="share-btn">
+          Share Publicly
+        </button>
+
+        {shareLink && (
+          <div>
+            <p>Public Link: <a href={shareLink} target="_blank" rel="noopener noreferrer">{shareLink}</a></p>
+          </div>
+        )}
+
+        <button onClick={() => setShowPrivateShare(true)} className="share-btn">
+          Share Privately
+        </button>
+
+        {showPrivateShare && (
+          <div className="private-share-modal">
+            <h4>Share with specific users</h4>
+            <input
+              type="text"
+              value={sharedWith}
+              onChange={(e) => setSharedWith(e.target.value.split(','))}
+              placeholder="Enter emails separated by commas"
+            />
+            <button onClick={handlePrivateShare}>Share</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
