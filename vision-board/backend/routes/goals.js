@@ -49,4 +49,49 @@ router.get('/progress', async (req, res) => {
     }
 })
 
+router.post('/goals/:id/share/public', async (req, res) => {
+    try {
+      const goal = await Goal.findById(req.params.id);
+      if (!goal) return res.status(404).json({ message: 'Goal not found' });
+  
+      goal.isPublic = true;
+      goal.shareableLink = goal.generateShareableLink();
+      await goal.save();
+  
+      res.status(200).json({ message: 'Goal made public', shareableLink: goal.shareableLink });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.post('/goals/:id/share/private', async (req, res) => {
+const { sharedWith } = req.body; 
+try {
+    const goal = await Goal.findById(req.params.id);
+    if (!goal) return res.status(404).json({ message: 'Goal not found' });
+
+    goal.sharedWith.push(...sharedWith);
+    await goal.save();
+
+    res.status(200).json({ message: 'Goal shared privately' });
+} catch (error) {
+    res.status(500).json({ message: 'Server error' });
+}
+});
+  
+router.get('/goals/shared/:id', async (req, res) => {
+try {
+    const goal = await Goal.findById(req.params.id);
+    if (!goal) return res.status(404).json({ message: 'Goal not found' });
+
+    if (goal.isPublic || goal.sharedWith.includes(req.user.email)) {
+    return res.status(200).json(goal);
+    }
+
+    res.status(403).json({ message: 'Access denied' });
+} catch (error) {
+    res.status(500).json({ message: 'Server error' });
+}
+});
+
 module.exports = router
