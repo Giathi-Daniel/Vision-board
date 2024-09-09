@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import AddCategoryForm from "./Category/AddCategoryForm";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import SocialShare from './SocialShare';
 
-function ProfessionalGoals() {
+function ProfessionalGoals({goal, showPrivateShare}) {
   const [goals, setGoals] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newGoal, setNewGoal] = useState({ title: '', description: '', category: '' });
