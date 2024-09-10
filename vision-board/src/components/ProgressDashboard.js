@@ -7,22 +7,24 @@ const ProgressDashboard = () => {
 
   useEffect(() => {
     const fetchGoals = async () => {
-      const response = await axios.get('/api/goals');
-      setGoals(response.data);
+      try {
+        const response = await axios.get('/api/goals');
+        setGoals(response.data);
+      } catch (error) {
+        console.error('Error fetching goals:', error);
+      }
     };
 
     fetchGoals();
   }, []);
 
   const data = {
-    labels: goals.map(goal => goal.title),
+    labels: goals.map((goal) => goal.title),
     datasets: [
       {
         label: 'Completion Percentage',
-        data: goals.map(goal => goal.completionPercentage),
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
+        data: goals.map((goal) => goal.completionPercentage),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
     ],
   };
@@ -34,21 +36,15 @@ const ProgressDashboard = () => {
         max: 100,
       },
     },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: function(context) {
-            return `${context.parsed.y}% Completed`;
-          },
-        },
-      },
-    },
+    maintainAspectRatio: false,
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-4">Goal Progress Overview</h2>
-      <Bar data={data} options={options} />
+      <h2 className="text-2xl font-bold mb-4">Progress Dashboard</h2>
+      <div className="h-96">
+        <Bar data={data} options={options} />
+      </div>
     </div>
   );
 };
