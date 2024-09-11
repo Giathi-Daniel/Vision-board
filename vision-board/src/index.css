@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Toastify__toast-container {
+    inline-size: 100%;
+    max-inline-size: 100%;
+}
+
+.Toastify__toast {
+    max-inline-size: calc(100% - 100px);
+    margin: 1rem 1rem 0 6rem;
+    word-wrap: break-word;
+}
+
+.Toastify__toast--default {
+    font-size: 16px;
+}
+
+@media (min-width: 640px) {
+    .Toastify__toast {
+        max-inline-size: 400px;
+    }
+}
