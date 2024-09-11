@@ -34,11 +34,8 @@ const Register = () => {
                     <label className="block text-gray-700">Password</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" required />
                 </div>
-                <button type='submit' className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition duration-150 ease-in">Login</button>
+                <button type='submit' className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition duration-150 ease-in">Register</button>
             </form>
-            <div className="text-center mt-4">
-                <img src="https://media.istockphoto.com/id/2073069852/vector/hand-giving-two-keys-with-keychain-in-form-of-house-3d-illustration.jpg?s=612x612&w=0&k=20&c=hDkU3z0uW6CxLsXH91u1GhtHzD6FXIoXklWfLlCNa70=" alt="Register illustration" className="mx-auto w-32" />
-            </div>
         </div>
     </div>
     

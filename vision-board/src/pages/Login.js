@@ -33,9 +33,6 @@ const Login = () => {
                 </div>
                 <button type='submit' className='w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-500 transition'>Login</button>
             </form>
-            <div className="text-center mt-4">
-                <img src='https://cdn.pixabay.com/photo/2018/07/12/21/32/subscribe-3534409_1280.jpg' className='mx-auto w-32' alt='Login illustration' />
-            </div>
         </div>
     </div>
   )
