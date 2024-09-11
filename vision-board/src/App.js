@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Header from './components/Header';
 import VisionBoard from './components/VisionBoard';
 import ProfessionalGoals from './components/ProfessionalGoals';
-import ManageCategories from "./components/Category/ManageCategories"
+import ManageCategories from "./components/CategoryManagement"
 import Notification from "./components/Notification"
 import AddGoalForm from "./components/AddGoalForm"
 import Dashboard from "./components/Dashboard"

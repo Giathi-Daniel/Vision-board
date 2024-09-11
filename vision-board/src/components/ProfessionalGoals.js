@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import AddCategoryForm from './Category/AddCategoryForm';
-// import SocialShare from './SocialShare';
+import AddCategoryForm from './CategoryManagement';
 
 function ProfessionalGoals() {
   const [goals, setGoals] = useState([]);
@@ -13,7 +12,7 @@ function ProfessionalGoals() {
   const [updatingGoal, setUpdatingGoal] = useState(null);
   const [shareLink, setShareLink] = useState('');
   const [sharedWith, setSharedWith] = useState([]);
-  const [loading, setLoading] = useState(false); // Added loading state for feedback
+  const [loading, setLoading] = useState(false);
 
   // Fetch goals and categories data on component mount
   useEffect(() => {
