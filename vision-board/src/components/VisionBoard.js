@@ -36,7 +36,7 @@ const VisionBoard = () => {
 
   return (
     <>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {categories.map((category, index) => (
           <div key={index} onClick={() => handleCategoryClick(category.path)} className={`${category.bgColor} shadow-md p-6 rounded-md cursor-pointer`}>
             <h2 className={`${category.textColor} text-xl font-semibold mb-4`}>{category.name}</h2>

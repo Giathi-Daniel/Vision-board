@@ -108,7 +108,7 @@ const Header = ({ title, onHomeClick, onNotificationClick }) => {
         {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
 
-      <nav ref={menuRef} className={`absolute top-16 right-4 bg-white shadow-md rounded-md w-48 ${isMenuOpen ? 'block' : 'hidden'} lg:hidden`}>
+      <nav ref={menuRef} className={`absolute top-[77px] right-4 bg-white shadow-md w-48 ${isMenuOpen ? 'block' : 'hidden'} lg:hidden`}>
         <div className="flex flex-col items-center p-4 space-y-2">
           <button onClick={handleHomeClick} className="flex items-center w-full text-blue-600 hover:text-blue-800">
             <FaHome size={24} className="mr-2" />

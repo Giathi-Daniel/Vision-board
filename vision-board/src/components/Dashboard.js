@@ -36,47 +36,53 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-8">Goal Progress Dashboard</h2>
+      <h2 className="text-3xl font-bold mb-8">Progress Dashboard</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Pie Chart */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Goal Completion Overview</h3>
-          <PieChart width={400} height={400}>
-            <Pie
-              data={pieData}
-              cx={200}
-              cy={200}
-              outerRadius={150}
-              fill="#8884d8"
-              dataKey="value"
-              label
-            >
-              {pieData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+        <div className="flex justify-center">
+          <div className="w-full max-w-xs md:max-w-sm lg:max-w-md">
+            <h3 className="text-xl font-semibold mb-4">Goal Completion Overview</h3>
+            <PieChart width={300} height={300}>
+              <Pie
+                data={pieData}
+                cx="50%"
+                cy="50%"
+                outerRadius="80%"
+                fill="#8884d8"
+                dataKey="value"
+                label
+              >
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </div>
         </div>
 
         {/* Line Chart */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Goal Progress Over Time</h3>
-          <LineChart
-            width={500}
-            height={400}
-            data={lineData}
-            margin={{
-              top: 5, right: 30, left: 20, bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="progress" stroke="#8884d8" />
-          </LineChart>
+        <div className="flex justify-center">
+          <div className="w-full max-w-xs md:max-w-sm lg:max-w-md">
+            <h3 className="text-xl font-semibold mb-4">Goal Progress Over Time</h3>
+            <div className="w-full h-72">
+              <LineChart
+                width={400}
+                height={300}
+                data={lineData}
+                margin={{
+                  top: 5, right: 30, left: 20, bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="progress" stroke="#8884d8" />
+              </LineChart>
+            </div>
+          </div>
         </div>
       </div>
     </div>
