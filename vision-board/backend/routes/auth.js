@@ -1,17 +1,18 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const authMiddleware = require('../middleware/authmiddleware');
-
 const router = express.Router()
 
 
-// User Register
 router.post('/register', async(req, res) => {
     const {name, email, password} = req.body
 
     try {
+        if (!email.match(/^\S+@\S+\.\S+$/)) {
+            return res.status(400).json({ message: 'Invalid email format'})
+        }
+
         let user = await User.findOne({email})
         if(user) {
             return res.status(400).json({ message: 'User already exists'})
@@ -21,7 +22,7 @@ router.post('/register', async(req, res) => {
         await user.save()
 
         const payload = { userId: user.id }
-        const token = jwt.sign(payload, 'jwtSecret', { expiresIn: '1h' })
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
         res.json({ token })
     } catch (err) {
@@ -29,7 +30,6 @@ router.post('/register', async(req, res) => {
     }
 })
 
-// User Login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body
 
@@ -41,11 +41,11 @@ router.post('/login', async (req, res) => {
 
         const isMatch = await user.matchPassword(password)
         if(!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' })
+            return res.status(400).json({ message: 'Wrong password' })
         }
 
         const payload = { userId: user.id}
-        const token = jwt.sign(payload, 'jwtSecret', { expiresIn: '1h' })
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
         res.json({ token })
     } catch (err) {
@@ -53,7 +53,6 @@ router.post('/login', async (req, res) => {
     }
 })
 
-// User Prof
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.userId).select('-password')
