@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import {ToastContainer} from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import VisionBoard from './components/VisionBoard';
 import ProfessionalGoals from './components/ProfessionalGoals';
-import ManageCategories from "./components/CategoryManagement"
-import Notification from "./components/Notification"
-import AddGoalForm from "./components/AddGoalForm"
-import Dashboard from "./components/Dashboard"
-import ProgressDashboard from "./components/ProgressDashboard"
-import Login from './pages/Login'
-import Register from './pages/Register'
-import Profile from './pages/Register'
-import NotFound from './pages/NotFound'; 
-
+import ManageCategories from "./components/CategoryManagement";
+import Notification from "./components/Notification";
+import AddGoalForm from "./components/AddGoalForm";
+import Dashboard from "./components/Dashboard";
+import ProgressDashboard from "./components/ProgressDashboard";
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile'; 
+import NotFound from './pages/NotFound';
 
 function App() {
-  const [goals, setGoals] = useState([])
-  const [showNotifications, setShowNotifications] = useState(false)
+  const [goals, setGoals] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const handleGoalAdded = (newGoal) => {
-    setGoals([...goals, newGoal])
-  }
+    setGoals([...goals, newGoal]);
+  };
 
   const handleNotificationClick = () => {
-    setShowNotifications(!showNotifications)
-  }
+    setShowNotifications(!showNotifications);
+  };
 
   return (
     <Router>
@@ -38,8 +37,7 @@ function App() {
             <Route path="/" element={<VisionBoard />} />
             <Route path="/professional-goals" element={<ProfessionalGoals />} />
             <Route path="/manage-categories" element={<ManageCategories />} />
-            <Route path="/manage-categories" element={<ManageCategories />} />
-            <Route path="/add-goal" render={() => <AddGoalForm onGoalAdded={handleGoalAdded} />} />
+            <Route path="/add-goal" element={<AddGoalForm onGoalAdded={handleGoalAdded} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
@@ -54,7 +52,7 @@ function App() {
   );
 }
 
-function HeaderWithLocation() {
+function HeaderWithLocation({ onNotificationClick }) {
   const location = useLocation();
 
   const pathTitleMap = {
@@ -78,14 +76,18 @@ function HeaderWithLocation() {
     '/manage-categories': 'Manage Categories',
     '/add-goal': 'Add Goal',
   };
-  
 
   const headerTitle = pathTitleMap[location.pathname] || 'My Vision Board';
+
   const showHomeButton = location.pathname !== '/';
 
-  return <Header title={headerTitle} onHomeClick={showHomeButton ? () => {} : null} />;
+  return (
+    <Header 
+      title={headerTitle} 
+      onHomeClick={showHomeButton ? () => {} : null} 
+      onNotificationClick={onNotificationClick} // Handle notifications
+    />
+  );
 }
 
 export default App;
-
-
