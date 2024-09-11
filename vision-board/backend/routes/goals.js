@@ -1,6 +1,55 @@
-const express = require('express')
-const router = express.Router()
-const Goal = require('../models/Goal')
+const express = require('express');
+const router = express.Router();
+const Goal = require('../models/Goal');
+
+router.post('/', async (req, res) => {
+    try {
+        const newGoal = new Goal(req.body);
+        await newGoal.save();
+        res.status(201).json(newGoal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating goal', error });
+    }
+});
+
+router.get('/', async (req, res) => {
+    try {
+        const goals = await Goal.find();
+        res.status(200).json(goals);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching goals', error });
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        const goal = await Goal.findById(req.params.id);
+        if (!goal) return res.status(404).json({ message: 'Goal not found' });
+        res.status(200).json(goal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching goal', error });
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedGoal) return res.status(404).json({ message: 'Goal not found' });
+        res.status(200).json(updatedGoal);
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating goal', error });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
+        if (!deletedGoal) return res.status(404).json({ message: 'Goal not found' });
+        res.status(200).json({ message: 'Goal deleted' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting goal', error });
+    }
+});
 
 router.post('/:goalId/subgoals', async (req, res) => {
     try {
@@ -23,59 +72,49 @@ router.post('/:goalId/subgoals', async (req, res) => {
 
 router.put('/:goalId/subgoals/:subgoalId', async(req, res) => {
     try {
-        const goal = await Goal.findById(req.params.goalId)
-        if(!goal) return res.status(400).json({message: 'Goal not found'})
+        const goal = await Goal.findById(req.params.goalId);
+        if (!goal) return res.status(400).json({ message: 'Goal not found' });
 
+        const subgoal = goal.subgoals.id(req.params.subgoalId);
+        subgoal.completed = req.body.completed;
 
-        const subgoal = goal.subgoals.id(req.params.subgoalId)
-        subgoal.completed = req.body.completed
-
-        await goal.save()
-        res.status(200).json(goal)
+        await goal.save();
+        res.status(200).json(goal);
     } catch (error) {
-        res.status(500).json({ message: 'Error updating subgoal', error})
+        res.status(500).json({ message: 'Error updating subgoal', error });
     }
-})
+});
 
 router.delete('/:goalId/subgoals/:subgoalId', async (req, res) => {
     try {
-        const goal = await Goal.findById(req.params.goalId)
-        if(!goal) return res.status(400).json({message: 'Goal not found'})
+        const goal = await Goal.findById(req.params.goalId);
+        if (!goal) return res.status(400).json({ message: 'Goal not found' });
 
-        goal.subgoals.id(req.params.subgoalId).remove()
-        await goal.save()
+        goal.subgoals.id(req.params.subgoalId).remove();
+        await goal.save();
 
-        res.status(200).json(goal)
+        res.status(200).json(goal);
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting subgoal', error })
+        res.status(500).json({ message: 'Error deleting subgoal', error });
     }
-})
-
-router.get('/progress', async (req, res) => {
-    try {
-        const goals = await Goal.find()
-        res.json(goals)
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching goals'})
-    }
-})
+});
 
 router.post('/:id/share/public', async (req, res) => {
     try {
-      const goal = await Goal.findById(req.params.id);
-      if (!goal) return res.status(404).json({ message: 'Goal not found' });
-  
-      goal.isPublic = true;
-      await goal.save();
-  
-      res.status(200).json({ message: 'Goal made public', shareableLink: goal.shareableLink });
+        const goal = await Goal.findById(req.params.id);
+        if (!goal) return res.status(404).json({ message: 'Goal not found' });
+
+        goal.isPublic = true;
+        await goal.save();
+
+        res.status(200).json({ message: 'Goal made public', shareableLink: goal.shareableLink });
     } catch (error) {
-      res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
 router.post('/:id/share/private', async (req, res) => {
-    const { sharedWith } = req.body; 
+    const { sharedWith } = req.body;
 
     try {
         const goal = await Goal.findById(req.params.id);
@@ -90,4 +129,4 @@ router.post('/:id/share/private', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;
