@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { FaHome, FaBell, FaChartBar, FaBars, FaTimes } from "react-icons/fa";
 import AuthContext from './AuthContext';
@@ -7,19 +7,51 @@ const Header = ({ title, onHomeClick, onNotificationClick }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const handleHomeClick = () => {
     if (onHomeClick) onHomeClick();
     navigate('/');
+    closeMenu();
   };
 
-  const handleLoginClick = () => navigate('/login');
-  const handleRegisterClick = () => navigate('/register');
-  const handleProfileClick = () => navigate('/profile');
+  const handleLoginClick = () => {
+    navigate('/login');
+    closeMenu();
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
+    closeMenu();
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+    closeMenu();
+  };
+
   const handleLogoutClick = () => {
     logout();
     navigate('/');
+    closeMenu();
   };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Close menu when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        closeMenu();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="bg-white shadow-md rounded-md p-4 flex items-center justify-between">
@@ -76,8 +108,8 @@ const Header = ({ title, onHomeClick, onNotificationClick }) => {
         {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
 
-      <nav className={`absolute top-20 right-4 bg-white shadow-md rounded-sm w-48 ${isMenuOpen ? 'block' : 'hidden'} lg:hidden`}>
-        <div className="flex flex-col items-center p-4 space-y-6">
+      <nav ref={menuRef} className={`absolute top-16 right-4 bg-white shadow-md rounded-md w-48 ${isMenuOpen ? 'block' : 'hidden'} lg:hidden`}>
+        <div className="flex flex-col items-center p-4 space-y-2">
           <button onClick={handleHomeClick} className="flex items-center w-full text-blue-600 hover:text-blue-800">
             <FaHome size={24} className="mr-2" />
             Home
@@ -86,7 +118,7 @@ const Header = ({ title, onHomeClick, onNotificationClick }) => {
             <FaBell size={24} className="mr-2" />
             Notifications
           </button>
-          <Link to="/dashboard" className="flex items-center w-full text-blue-600 hover:text-blue-800">
+          <Link to="/dashboard" className="flex items-center w-full text-blue-600 hover:text-blue-800" onClick={closeMenu}>
             <FaChartBar size={24} className="mr-2" />
             Dashboard
           </Link>
@@ -94,7 +126,7 @@ const Header = ({ title, onHomeClick, onNotificationClick }) => {
             <>
               <button
                 onClick={handleLoginClick}
-                className="w-full px-4 py-2 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded-md"
+                className="w-full px-4 py-2 border border-blue-600 text-blue-600 hover:bg-blue-100 rounded-md"
               >
                 Sign In
               </button>
