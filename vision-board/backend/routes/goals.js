@@ -4,24 +4,32 @@ const Goal = require('../models/Goal')
 
 router.post('/:goalId/subgoals', async (req, res) => {
     try {
-        const goal = await Goal.findById(req.params.goalId)
+        const goal = await Goal.findById(req.params.goalId);
+        if (!goal) return res.status(404).json({ message: 'Goal not found' });
+
         const subgoal = {
             title: req.body.title,
-            description: req.body.description,
-        }
-        goal.subgoals.push(subgoal)
-        await goal.save()
-        res.status(201).json(goal)
+            description: req.body.description || ''
+        };
+
+        goal.subgoals.push(subgoal);
+        await goal.save();
+
+        res.status(201).json(goal);
     } catch (err) {
-        res.status(500).json({message: "Error adding subgoal", err})
+        res.status(500).json({ message: 'Error adding subgoal', err });
     }
-})
+});
 
 router.put('/:goalId/subgoals/:subgoalId', async(req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId)
+        if(!goal) return res.status(400).json({message: 'Goal not found'})
+
+
         const subgoal = goal.subgoals.id(req.params.subgoalId)
         subgoal.completed = req.body.completed
+
         await goal.save()
         res.status(200).json(goal)
     } catch (error) {
@@ -32,8 +40,11 @@ router.put('/:goalId/subgoals/:subgoalId', async(req, res) => {
 router.delete('/:goalId/subgoals/:subgoalId', async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId)
+        if(!goal) return res.status(400).json({message: 'Goal not found'})
+
         goal.subgoals.id(req.params.subgoalId).remove()
         await goal.save()
+
         res.status(200).json(goal)
     } catch (error) {
         res.status(500).json({ message: 'Error deleting subgoal', error })
@@ -45,17 +56,16 @@ router.get('/progress', async (req, res) => {
         const goals = await Goal.find()
         res.json(goals)
     } catch (error) {
-        res.status(500).json({ message: 'Error'})
+        res.status(500).json({ message: 'Error fetching goals'})
     }
 })
 
-router.post('/goals/:id/share/public', async (req, res) => {
+router.post('/:id/share/public', async (req, res) => {
     try {
       const goal = await Goal.findById(req.params.id);
       if (!goal) return res.status(404).json({ message: 'Goal not found' });
   
       goal.isPublic = true;
-      goal.shareableLink = goal.generateShareableLink();
       await goal.save();
   
       res.status(200).json({ message: 'Goal made public', shareableLink: goal.shareableLink });
@@ -64,34 +74,20 @@ router.post('/goals/:id/share/public', async (req, res) => {
     }
 });
 
-router.post('/goals/:id/share/private', async (req, res) => {
-const { sharedWith } = req.body; 
-try {
-    const goal = await Goal.findById(req.params.id);
-    if (!goal) return res.status(404).json({ message: 'Goal not found' });
+router.post('/:id/share/private', async (req, res) => {
+    const { sharedWith } = req.body; 
 
-    goal.sharedWith.push(...sharedWith);
-    await goal.save();
+    try {
+        const goal = await Goal.findById(req.params.id);
+        if (!goal) return res.status(404).json({ message: 'Goal not found' });
 
-    res.status(200).json({ message: 'Goal shared privately' });
-} catch (error) {
-    res.status(500).json({ message: 'Server error' });
-}
-});
-  
-router.get('/goals/shared/:id', async (req, res) => {
-try {
-    const goal = await Goal.findById(req.params.id);
-    if (!goal) return res.status(404).json({ message: 'Goal not found' });
+        goal.sharedWith.push(...sharedWith);
+        await goal.save();
 
-    if (goal.isPublic || goal.sharedWith.includes(req.user.email)) {
-    return res.status(200).json(goal);
+        res.status(200).json({ message: 'Goal shared privately' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
     }
-
-    res.status(403).json({ message: 'Access denied' });
-} catch (error) {
-    res.status(500).json({ message: 'Server error' });
-}
 });
 
 module.exports = router
