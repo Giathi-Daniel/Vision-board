@@ -4,9 +4,7 @@ const GoalTemplateSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: String,
     category: String,
-    defaultSubgoals: [{title: String, description: String}],
+    defaultDuration: {type: Number},
 })
 
-const GoalTemplate = mongoose.model('GoalTemplate', GoalTemplateSchema)
-
-module.exports = GoalTemplate;
+module.exports = mongoose.model('GoalTemplate', GoalTemplateSchema)

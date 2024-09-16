@@ -17,16 +17,15 @@ router.post('/:templateId/clone', async (req, res) => {
         const template = await GoalTemplate.findById(req.params.templateId);
         if (!template) return res.status(404).json({message: 'Template not found'});
 
-        const clonedGoal = new Goal({
+        const newGoal = new Goal({
             title: template.title,
             description: template.description,
             category: template.category,
-            subgoals: template.defaultSubgoals,
-            userEmail: req.body.userEmail
+            userId: req.user.id
         });
 
-        await clonedGoal.save();
-        res.status(201).json(clonedGoal)
+        await newGoal.save();
+        res.status(201).json(newGoal)
     } catch(err){
         res.status(500).json({ message: 'Error cloning template'})
     }
