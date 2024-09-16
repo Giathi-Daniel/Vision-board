@@ -6,6 +6,7 @@ const cron = require('node-cron')
 const nodemailer = require('nodemailer')
 const Goal = require('./models/Goal')
 // const Category = require('./models/Category');
+const goalTemplateRoutes = require('./routes/goalTemplates');
 require('dotenv').config()
 
 const app = express()
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/goals', goalRoutes);
+app.use('/api/templates', goalTemplateRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
