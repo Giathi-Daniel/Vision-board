@@ -129,4 +129,32 @@ router.post('/:id/share/private', async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    const {query, category, completed} = req.query;
+
+    try {
+        const searchCriteria = {};
+        if(query){
+            searchCriteria.$or = [
+                // case sensitive search
+                {title: { $regex: query, $options: 'i'}},
+                {description: {$regex: query, $options: 'i'}}
+            ]
+        }
+
+        if(category) {
+            searchCriteria.category = category;
+        }
+
+        if(completed) {
+            searchCriteria.completed = completed === 'true'
+        }
+
+        const goals = await Goal.find(searchCriteria)
+        res.json(goals)
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching goals', error})
+    }
+})
+
 module.exports = router;
