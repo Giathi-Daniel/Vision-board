@@ -16,7 +16,14 @@ const goalSchema = new mongoose.Schema({
     subgoals: [subgoalSchema],
     sharedWith: { type: [String], default: [] },
     isPublic: { type: Boolean, default: false },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    notes: [
+        {
+            content: {type: String, required: true},
+            createdAt: {type: Date, default: Date.now },
+            updatedAt: {type: Date},
+        },
+    ],
 })
 
 goalSchema.virtual('sharebleLink').get(function() {
