@@ -36,16 +36,21 @@ const VisionBoard = () => {
 
   return (
     <>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+     <section className="flex items-center justify-between mt-6">
+        <Link to="/search" className="px-4 py-2 text-white transition bg-blue-500 rounded-md hover:bg-blue-600">
+          Search Goals
+        </Link>
+      </section>
+      <section className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2 lg:grid-cols-3">
         {categories.map((category, index) => (
           <div key={index} onClick={() => handleCategoryClick(category.path)} className={`${category.bgColor} shadow-md p-6 rounded-md cursor-pointer`}>
             <h2 className={`${category.textColor} text-xl font-semibold mb-4`}>{category.name}</h2>
-            <div className="bg-gray-200 px-2 py-2 rounded-sm w-full">
-                <p className="text-gray-600 mt-1 truncate">Description not available</p>
+            <div className="w-full px-2 py-2 bg-gray-200 rounded-sm">
+                <p className="mt-1 text-gray-600 truncate">Description not available</p>
               </div>
           </div>
         ))}
-        <Link to="/add-goal" className="bg-green-500 text-white px-4 py-2 rounded-md">
+        <Link to="/add-goal" className="px-4 py-2 text-white bg-green-500 rounded-md">
           Add New Goal
         </Link>
       </section>

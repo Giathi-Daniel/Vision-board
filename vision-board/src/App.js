@@ -11,6 +11,7 @@ import AddGoalForm from "./components/AddGoalForm";
 import Dashboard from "./components/Dashboard";
 import ProgressDashboard from "./components/ProgressDashboard";
 import UpcomingMilestones from "./components/UpcomingMilestones";
+import SearchPage from "./components/SearchPage";
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile'; 
@@ -42,6 +43,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/upcoming-milestones" element={<UpcomingMilestones />} />
             <Route path="/progress-dashboard" element={<ProgressDashboard />} />
