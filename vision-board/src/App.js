@@ -11,6 +11,7 @@ import AddGoalForm from "./components/AddGoalForm";
 import Dashboard from "./components/Dashboard";
 import ProgressDashboard from "./components/ProgressDashboard";
 import UpcomingMilestones from "./components/UpcomingMilestones";
+import GoalDetail from "./components/GoalDetail";
 import SearchPage from "./components/SearchPage";
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -37,6 +38,7 @@ function App() {
         <main className="max-w-6xl mx-auto">
           <Routes>
             <Route path="/" element={<VisionBoard />} />
+            <Route path="/goals/:category" element={<GoalDetail />} />
             <Route path="/professional-goals" element={<ProfessionalGoals />} />
             <Route path="/manage-categories" element={<ManageCategories />} />
             <Route path="/add-goal" element={<AddGoalForm onGoalAdded={handleGoalAdded} />} />
