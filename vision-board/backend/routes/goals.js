@@ -157,4 +157,60 @@ router.get('/search', async (req, res) => {
     }
 })
 
+// NOTES IMPLEMENTATION
+router.post('/:goalId/notes', async (req, res) => {
+    const {content} = req.body;
+
+    try {
+        const goal = await Goal.findById(req.params.goalId);
+        if(!goal) return res.status(404).json({ message: 'Goal not found'})
+
+        goal.notes.push({ content})
+        await goal.save();
+
+        res.status(201).json(goal)
+    } catch (err) {
+        res.status(500).json({ message: 'Error adding note', err})
+    }
+})
+
+router.put('/:goalId/notes/:noteId', async (req, res) => {
+    const { content } = req.body;
+
+    try {
+        const goal = await Goal.findById(req.params.goalId);
+        if(!goal) return res.status(404).json({ message: 'Goal not found'})
+
+        const note = goal.notes.id(req.params.noteId);
+        if (!note) return res.status(404).json({ message: 'Note not found' })
+
+        note.content = content;
+        note.updateAt = new Date();
+
+        await goal.save();
+
+        res.status(201).json(goal)
+    } catch (err) {
+        res.status(500).json({ message: 'Error updating note', err})
+    }
+})
+
+router.delete('/:goalId/notes/:noteId', async (req, res) => {
+    try {
+        const goal = await Goal.findById(req.params.goalId);
+        if(!goal) return res.status(404).json({ message: 'Goal not found'})
+
+        const note = goal.notes.id(req.params.noteId);
+        if (!note) return res.status(404).json({ message: 'Note not found' })
+
+        note.remove();
+        
+        await goal.save();
+
+        res.status(200).json(goal)
+    } catch (err) {
+        res.status(500).json({ message: 'Error deleting note', err})
+    }
+})
+
 module.exports = router;
