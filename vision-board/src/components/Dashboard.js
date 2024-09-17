@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const [goals, setGoals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   useEffect(() => {
@@ -11,8 +13,10 @@ const Dashboard = () => {
       try {
         const response = await axios.get('/api/goals/progress');
         setGoals(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching goals:', error);
+        setError('Error fetching goals');
+        setLoading(false);
       }
     };
 
@@ -21,7 +25,7 @@ const Dashboard = () => {
 
   const getTotalProgress = (subgoals) => {
     const totalProgress = subgoals.reduce((acc, subgoal) => acc + subgoal.progress, 0);
-    return Math.round(totalProgress / subgoals.length);
+    return subgoals.length > 0 ? Math.round(totalProgress / subgoals.length) : 0;
   };
 
   const pieData = goals.map((goal) => ({
@@ -34,38 +38,54 @@ const Dashboard = () => {
     progress: getTotalProgress(goal.subgoals),
   }));
 
+  if (loading) {
+    return <p>Loading goals data...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (goals.length === 0) {
+    return <p>No goals available to display.</p>;
+  }
+
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-8">Progress Dashboard</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="container p-6 mx-auto">
+      <h2 className="mb-8 text-3xl font-bold">Progress Dashboard</h2>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Pie Chart */}
         <div className="flex justify-center">
           <div className="w-full max-w-xs md:max-w-sm lg:max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Goal Completion Overview</h3>
-            <PieChart width={300} height={300}>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                outerRadius="80%"
-                fill="#8884d8"
-                dataKey="value"
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
+            <h3 className="mb-4 text-xl font-semibold">Goal Completion Overview</h3>
+            {pieData.length > 0 ? (
+              <PieChart width={300} height={300}>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius="80%"
+                  fill="#8884d8"
+                  dataKey="value"
+                  label
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            ) : (
+              <p>No progress data available</p>
+            )}
           </div>
         </div>
 
         {/* Line Chart */}
         <div className="flex justify-center">
           <div className="w-full max-w-xs md:max-w-sm lg:max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Goal Progress Over Time</h3>
-            <div className="w-full h-72">
+            <h3 className="mb-4 text-xl font-semibold">Goal Progress Over Time</h3>
+            {lineData.length > 0 ? (
               <LineChart
                 width={400}
                 height={300}
@@ -81,7 +101,9 @@ const Dashboard = () => {
                 <Legend />
                 <Line type="monotone" dataKey="progress" stroke="#8884d8" />
               </LineChart>
-            </div>
+            ) : (
+              <p>No progress data available</p>
+            )}
           </div>
         </div>
       </div>

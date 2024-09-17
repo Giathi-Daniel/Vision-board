@@ -27,11 +27,11 @@ const VisionBoard = () => {
   const navigate = useNavigate()
 
   const handleCategoryClick = (path) => {
-    if(!user) {
-      toast.error('You must be authenticated to access this goal')
+    if (!user) {
+      toast.error('You must be authenticated to access this goal');
     } else {
-      navigate(path)
-    }
+      navigate(`/goals/${path}`); 
+    }    
   }
 
   return (
